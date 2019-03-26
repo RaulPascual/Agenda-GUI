@@ -62,7 +62,7 @@ public class Entrada implements Comparable<Entrada>{
 
     @Override
     public int compareTo(Entrada entrada) {
-       return this.nombre.compareTo(entrada.nombre);
+       return this.nombre.compareToIgnoreCase(entrada.nombre);
     }
      
    
