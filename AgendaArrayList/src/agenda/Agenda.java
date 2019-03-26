@@ -97,6 +97,11 @@ public class Agenda extends javax.swing.JFrame {
                 txfDireccionActionPerformed(evt);
             }
         });
+        txfDireccion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txfDireccionKeyReleased(evt);
+            }
+        });
 
         txfFijo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txfFijo.addActionListener(new java.awt.event.ActionListener() {
@@ -104,11 +109,24 @@ public class Agenda extends javax.swing.JFrame {
                 txfFijoActionPerformed(evt);
             }
         });
+        txfFijo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txfFijoKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txfFijoKeyTyped(evt);
+            }
+        });
 
         txfMovil.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txfMovil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txfMovilActionPerformed(evt);
+            }
+        });
+        txfMovil.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txfMovilKeyReleased(evt);
             }
         });
 
@@ -119,6 +137,7 @@ public class Agenda extends javax.swing.JFrame {
             }
         });
 
+        jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnPrimero.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/primero.png"))); // NOI18N
         btnPrimero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -328,6 +347,65 @@ public class Agenda extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void txfDireccionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txfDireccionKeyReleased
+         // TODO add your handling code here:
+      
+         char digito = evt.getKeyChar();
+         if(Character.isDigit(digito)==true){
+             
+            
+         String sFijo = txfFijo.getText();
+         int iFijo = Integer.parseInt(sFijo);
+         agenda.get(puntero).setTfnoFijo(iFijo);
+         }else{
+             if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_BACK_SPACE || evt.getKeyCode() == java.awt.event.KeyEvent.VK_DELETE){
+             }else{
+         JOptionPane.showMessageDialog(this, "No es valido", "Error", ERROR_MESSAGE);
+         int tlfnoAnterior = agenda.get(puntero).getTfnoFijo();
+          txfFijo.setText(tlfnoAnterior+"");
+             }
+         }
+         
+         
+    }//GEN-LAST:event_txfDireccionKeyReleased
+
+    private void txfFijoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txfFijoKeyReleased
+         // TODO add your handling code here:
+         String sFijo = txfFijo.getText();
+        
+         try{
+         int iFijo = Integer.parseInt(sFijo);
+         //Esto solo se hace si no salta la excepcion
+         }catch(java.lang.NumberFormatException e){
+          JOptionPane.showMessageDialog(this, "No es un numero valido", "Error", ERROR_MESSAGE);
+          int tlfnoAnterior = agenda.get(puntero).getTfnoFijo();
+          txfFijo.setText(tlfnoAnterior+"");
+         }
+           
+    }//GEN-LAST:event_txfFijoKeyReleased
+
+    private void txfFijoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txfFijoKeyTyped
+        // TODO add your handling code here:
+        
+          
+    }//GEN-LAST:event_txfFijoKeyTyped
+
+    private void txfMovilKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txfMovilKeyReleased
+         // TODO add your handling code here:
+         
+           String sMovil = txfMovil.getText();
+        
+         try{
+         int iFijo = Integer.parseInt(sMovil);
+         //Esto solo se hace si no salta la excepcion
+         }catch(java.lang.NumberFormatException e){
+          JOptionPane.showMessageDialog(this, "No es un numero valido", "Error", ERROR_MESSAGE);
+          int tlfnoAnterior = agenda.get(puntero).getTfnoMovil();
+          txfMovil.setText(tlfnoAnterior+"");
+         
+         }
+    }//GEN-LAST:event_txfMovilKeyReleased
 
     /**
      * @param args the command line arguments
