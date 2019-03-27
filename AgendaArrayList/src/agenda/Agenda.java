@@ -384,6 +384,10 @@ public class Agenda extends javax.swing.JFrame {
             
          String sFijo = txfFijo.getText();
          int iFijo = Integer.parseInt(sFijo);
+         
+         if(puntero>=0){
+         agenda.get(puntero).setTfnoFijo(iFijo);
+         }
          agenda.get(puntero).setTfnoFijo(iFijo);
          }else{
              if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_BACK_SPACE || evt.getKeyCode() == java.awt.event.KeyEvent.VK_DELETE){
@@ -444,15 +448,19 @@ public class Agenda extends javax.swing.JFrame {
     btnBorrar.setEnabled(b);
     }
  
+    private void borrarCampos(){
+     txfDireccion.setText("");
+         txfFijo.setText("");
+         txfNombre.setText("");
+         txfMovil.setText("");
+    
+    }
     
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
          // TODO add your handling code here:
          if(btnAdd.isSelected()){
          btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/add2.png")));
-         txfDireccion.setText("");
-         txfFijo.setText("");
-         txfNombre.setText("");
-         txfMovil.setText("");
+        borrarCampos();
          habilitarBotones(false);
          txfNombre.requestFocus();
          
@@ -485,6 +493,40 @@ public class Agenda extends javax.swing.JFrame {
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
         // TODO add your handling code here:
+      
+ int botonPulsado = JOptionPane.showConfirmDialog(this,
+ "¿Desea borrar la entrada mostrada en pantalla?", "Borrar",
+ JOptionPane.YES_NO_CANCEL_OPTION);
+ switch (botonPulsado) {
+ case JOptionPane.YES_OPTION:
+     if(agenda.size()>0){
+ agenda.remove(puntero);
+ if(puntero==agenda.size()){
+ puntero--;
+ }
+ 
+ if(puntero==-1){
+     borrarCampos();
+     habilitarBotones(false);
+     btnAdd.setEnabled(true);
+ }else{
+ mostrarEntrada();
+ }
+   }
+ break;
+ case JOptionPane.NO_OPTION:
+  JOptionPane.showMessageDialog(this, "La entrada no ha sido borrada", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+ 
+ break;
+ case JOptionPane.CANCEL_OPTION:
+   JOptionPane.showMessageDialog(this, "La operacion ha sido cancelada", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+ break;
+ default:
+       JOptionPane.showMessageDialog(this, "La ventana ha sido cerrada", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+
+ break;
+ }
+ 
         
         
     }//GEN-LAST:event_btnBorrarActionPerformed
