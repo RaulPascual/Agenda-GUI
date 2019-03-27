@@ -392,7 +392,7 @@ public class Agenda extends javax.swing.JFrame {
          }else{
              if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_BACK_SPACE || evt.getKeyCode() == java.awt.event.KeyEvent.VK_DELETE){
              }else{
-         JOptionPane.showMessageDialog(this, "No es valido", "Error", ERROR_MESSAGE);
+        // JOptionPane.showMessageDialog(this, "No es valido", "Error", ERROR_MESSAGE);
          int tlfnoAnterior = agenda.get(puntero).getTfnoFijo();
           txfFijo.setText(tlfnoAnterior+"");
              }
