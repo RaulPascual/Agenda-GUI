@@ -6,9 +6,11 @@
 package agenda;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,6 +49,7 @@ public class Agenda extends javax.swing.JFrame {
        
        if(seleccion == JFileChooser.APPROVE_OPTION){
        File file = fileChooser.getSelectedFile();
+       this.setTitle(file.getName());
             try {
                  reader = new FileReader(file);
                  fichero = new BufferedReader(reader);
@@ -93,11 +96,14 @@ public class Agenda extends javax.swing.JFrame {
     }
     
     private void mostrarEntrada(){
+        
+        if(agenda.size()>0){
         Entrada e = agenda.get(puntero);
         txfNombre.setText(e.getNombre());
         txfDireccion.setText(e.getDireccion());
         txfFijo.setText(e.getTfnoFijo()+"");
         txfMovil.setText(e.getTfnoMovil()+"");
+        }
         
     }
     
@@ -130,6 +136,11 @@ public class Agenda extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Agenda ");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -583,6 +594,37 @@ public class Agenda extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnBorrarActionPerformed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        FileWriter writer = null;
+        BufferedWriter fichero = null;
+       JFileChooser fileChooser = new JFileChooser();
+       int seleccion = fileChooser.showSaveDialog(null); //Show Save dialog!    
+       if(seleccion == JFileChooser.APPROVE_OPTION){
+            try {
+                File file = fileChooser.getSelectedFile();
+                writer = new FileWriter(file);
+                fichero = new BufferedWriter(writer);
+                for(Entrada e:agenda){
+                    fichero.write(e.getNombre());
+                    fichero.newLine(); //o poner /r/n
+                    fichero.write(e.getDireccion());
+                    fichero.newLine();
+                    fichero.write(e.getTfnoFijo()+"");//es un int, poner +""
+                    fichero.newLine();
+                    fichero.write(e.getTfnoMovil()+"");
+                    fichero.newLine();
+                    
+                }    
+                fichero.close();
+                writer.close();
+                
+            } catch (IOException ex) {
+                Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
+            }
+       }
+    }//GEN-LAST:event_formWindowClosing
+
     /**
      * @param args the command line arguments
      */
@@ -640,4 +682,4 @@ public class Agenda extends javax.swing.JFrame {
 
 private ArrayList<Entrada> agenda;
 private int puntero =0; //Indicar la posicion en la que se esta 
-}
+} 
