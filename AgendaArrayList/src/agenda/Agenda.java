@@ -5,10 +5,19 @@
  */
 package agenda;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.stage.FileChooser;
 import javax.swing.Icon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
@@ -31,12 +40,55 @@ public class Agenda extends javax.swing.JFrame {
     private void leerEntradas(){
         
         agenda = new ArrayList<Entrada>(100);
-        agenda.add(new Entrada ("Pepe", "Paseo Zorrilla, 125 3ºD", 983000111, 666000111));
-        agenda.add(new Entrada ("Pepa", "Plaza Zorrilla, 1 5ºD", 983000222, 666000222));
-        agenda.add(new Entrada ("Paco", "Avda. Segovia, 12", 983000333, 666000333));
-        agenda.add(new Entrada ("Ana", "C/Muro, 1", 983000444, 666000444));
-        agenda.add(new Entrada ("Carlos", "Plaza Mayor, 3", 983000555, 666000555));
-        agenda.add(new Entrada ("Marta", "C/Lopez Gomez, 12", 983000666, 666000666));
+        FileReader reader = null;
+        BufferedReader fichero = null;
+       JFileChooser fileChooser = new JFileChooser();
+       int seleccion = fileChooser.showOpenDialog(null);
+       
+       if(seleccion == JFileChooser.APPROVE_OPTION){
+       File file = fileChooser.getSelectedFile();
+            try {
+                 reader = new FileReader(file);
+                 fichero = new BufferedReader(reader);
+                String nombre, direccion, telf, telm;
+                nombre = fichero.readLine(); //para esto se hace el buffered
+                while(nombre != null){
+                  direccion = fichero.readLine();
+                  telf = fichero.readLine();
+                  telm = fichero.readLine();
+                agenda.add(new Entrada(nombre, direccion, Integer.parseInt(telm), Integer.parseInt(telm)));
+                 
+                
+                nombre = fichero.readLine(); //OJO!
+               
+                //Volver a ponerlo 
+                }
+               
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
+            }finally{
+           try {
+               try {
+                   fichero.close();
+               } catch (IOException ex) {
+                   Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
+               }
+               reader.close();
+           } catch (Exception ex) { //Poner solo exception, quitar IOException
+               Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
+           }
+            }
+           
+       }
+        
+       // agenda.add(new Entrada ("Pepe", "Paseo Zorrilla, 125 3ºD", 983000111, 666000111));
+       // agenda.add(new Entrada ("Pepa", "Plaza Zorrilla, 1 5ºD", 983000222, 666000222));
+       // agenda.add(new Entrada ("Paco", "Avda. Segovia, 12", 983000333, 666000333));
+       // agenda.add(new Entrada ("Ana", "C/Muro, 1", 983000444, 666000444));
+       // agenda.add(new Entrada ("Carlos", "Plaza Mayor, 3", 983000555, 666000555));
+       // agenda.add(new Entrada ("Marta", "C/Lopez Gomez, 12", 983000666, 666000666));
         Collections.sort(agenda);
     }
     
